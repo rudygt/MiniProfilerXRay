@@ -23,7 +23,7 @@ namespace MiniProfilerXRay
 
         private static readonly string X_FORWARDED_FOR = "X-Forwarded-For";
 
-        private static readonly OrderedDictionary AlreadySended = new OrderedDictionary();
+        private static readonly OrderedDictionary AlreadySent = new OrderedDictionary();
         private readonly ISegmentEmitter _emmiter = new UdpSegmentEmitter();
 
         private IServiceProvider _provider;
@@ -63,13 +63,13 @@ namespace MiniProfilerXRay
 
             trace.IsInProgress = false;
 
-            if (!AlreadySended.Contains(profiler.Id))
+            if (!AlreadySent.Contains(profiler.Id))
             {
                 _emmiter.Send(trace);
-                AlreadySended.Add(profiler.Id, true);
+                AlreadySent.Add(profiler.Id, true);
             }
 
-            if (AlreadySended.Count >= 10) AlreadySended.RemoveAt(0);
+            if (AlreadySent.Count >= 10) AlreadySent.RemoveAt(0);
             //File.WriteAllText("profile" + trace.TraceId + ".json", JsonConvert.SerializeObject(profiler));
         }
 
