@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.119" />
-    <PackageReference Include="rdebug.MiniProfilerXRay" Version="1.0.0" />
+    <PackageReference Include="rdebug.MiniProfilerXRay" Version="1.0.2" />
   </ItemGroup>
 
 </Project>
