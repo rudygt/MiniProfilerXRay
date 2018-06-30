@@ -1,0 +1,1 @@
+docker run --rm -it --privileged --name=tcpdump -p 2000:2000/udp itsthenetwork/alpine-tcpdump -nn -A 'udp and dst port 2000'
