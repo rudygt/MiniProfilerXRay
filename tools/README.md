@@ -4,13 +4,13 @@
 
 * build docker image
 
-run this command in the xraylocal folder
+run this command in the tools/xraylocal folder
 
 ```
 docker build -t xray-daemon .
 ```
 
-* run local xray daemon (you will neeed an aws key/secret)
+* run local xray daemon (you will neeed an aws key/secret), note that the default region on the aws console could be other than "us-east-1" so switch the console or change this docker run command to send the xray traces to your desired region. 
 
 ```
 docker run --rm --attach STDOUT -e AWS_ACCESS_KEY_ID=[put your key id here] -e AWS_SECRET_ACCESS_KEY=[put your key secret here] -e AWS_REGION=us-east-1 --name xray-daemon -p 2000:2000/udp xray-daemon -o
