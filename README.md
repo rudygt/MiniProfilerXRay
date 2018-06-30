@@ -1,5 +1,5 @@
 # MiniProfilerXRay
-a simple storage provider for MiniProfiler .NET that publish traces to Amazon X-Ray
+a simple storage provider for MiniProfiler .NET that publishes traces to Amazon X-Ray
 
 
 ## NOTE: Work in Progress. Use at your own risk. 
@@ -35,6 +35,6 @@ ParametrizedSqlWithEnums trace
 
 ![alt text](https://github.com/rudygt/MiniProfilerXRay/blob/master/Samples.AspNetCore/ParametrizedSqlWithEnums.PNG "X-Ray Console View")
 
-Extra this package include a custom IControllerFactory that allows Mini Profiler to trace controller creation time
+Extra this package includes a custom IControllerFactory that allows Mini Profiler to trace controller creation time
 
 ![alt text](https://github.com/rudygt/MiniProfilerXRay/blob/master/Samples.AspNetCore/ProfileControllerCreation.PNG "X-Ray Console View")
