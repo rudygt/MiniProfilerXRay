@@ -4,6 +4,10 @@ a simple storage provider for MiniProfiler .NET that publishes traces to Amazon 
 
 ## NOTE: Work in Progress. Use at your own risk. 
 
+## Run XRay Daemon locally 
+
+[XRay Local Guide](tools/README.md)
+
 ## Examples 
 ### Simple Console App
 
