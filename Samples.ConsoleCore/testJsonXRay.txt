@@ -1,0 +1,61 @@
+{
+    "Duration": 0.789,
+    "Id": "1-5b35b7b6-09000e28c912ffb20852fa89",
+    "Segments": [
+        {
+            "Document": {
+                "id": "1432c95ff876bc5e",
+                "name": "Test",
+                "start_time": 1530247094.60173,
+                "end_time": 1530247095.39123,
+                "trace_id": "1-5b35b7b6-09000e28c912ffb20852fa89",
+                "subsegments": [
+                    {
+                        "id": "1082f0c40f127756",
+                        "name": "Level 1",
+                        "start_time": 1530247094.60453,
+                        "end_time": 1530247095.39093,
+                        "subsegments": [
+                            {
+                                "id": "d3d0eaf222ae3f98",
+                                "name": "Open",
+                                "start_time": 1530247094.64613,
+                                "end_time": 1530247094.66473,
+                                "sql": {
+                                    "sanitized_query": "Connection Open()"
+                                }
+                            },
+                            {
+                                "id": "80cce3860f4918b7",
+                                "name": "Reader",
+                                "start_time": 1530247094.74573,
+                                "end_time": 1530247094.76683,
+                                "sql": {
+                                    "sanitized_query": "select 1"
+                                }
+                            },
+                            {
+                                "id": "85825472baabb3e8",
+                                "name": "Level 2",
+                                "start_time": 1530247094.76763,
+                                "end_time": 1530247094.76863,
+                                "subsegments": [
+                                    {
+                                        "id": "241453eeb7e52549",
+                                        "name": "Reader",
+                                        "start_time": 1530247094.76773,
+                                        "end_time": 1530247094.76793,
+                                        "sql": {
+                                            "sanitized_query": "select 1"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Id": "1432c95ff876bc5e"
+        }
+    ]
+}

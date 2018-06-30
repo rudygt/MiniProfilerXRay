@@ -1,0 +1,9 @@
+﻿@{
+    await Task.Delay(50);
+}
+@for(var i = 0; i < 3; i++)
+{
+    @Html.Partial("NestedChild")
+    Html.RenderPartial("NestedChild");
+    @await Component.InvokeAsync("ComponentTest")
+}
