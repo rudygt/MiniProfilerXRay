@@ -7,7 +7,7 @@
     <Authors>Rudy Alvarez</Authors>
     <Company>rdebug</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageProjectUrl>https://github.com/rudygt/MiniProfilerXRay</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rudygt/MiniProfilerXRay</RepositoryUrl>
   </PropertyGroup>
