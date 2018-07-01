@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MiniProfilerXRay;
+using MiniProfilerXRay.EntityFrameworkCore;
 using Samples.AspNetCore.Models;
 using StackExchange.Profiling.Storage;
 
@@ -42,7 +43,7 @@ namespace Samples.AspNetCore
             services.AddSingleton<IControllerFactory, MiniprofilerControllerFactory>();
 
             // required to inject service provider later, to capture http context inside the storage provider
-            var xrayStorage = new XRayMiniprofilerStorage("192.168.99.100:2000");
+            var xrayStorage = new XRayMiniprofilerStorage("192.168.99.100:2000", "AspNetCoreTest");
             services.AddSingleton(xrayStorage);
 
             // optional use the XRay sampling strategy to profile or not
@@ -90,7 +91,7 @@ namespace Samples.AspNetCore
 
                 // Optionally disable "Connection Open()", "Connection Close()" (and async variants).
                 //options.TrackConnectionOpenClose = false;
-            }).AddEntityFramework();
+            }).AddXRayEntityFramework();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

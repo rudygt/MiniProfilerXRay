@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.ConsoleCore", "Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.AspNetCore", "Samples.AspNetCore\Samples.AspNetCore.csproj", "{6400E73E-C7D6-4B06-B573-929D95005071}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniProfilerXRay.EntityFrameworkCore", "MiniProfilerXRay.EntityFrameworkCore\MiniProfilerXRay.EntityFrameworkCore.csproj", "{AF4CEA6E-797B-4B14-97D4-0CA872EA1F02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6400E73E-C7D6-4B06-B573-929D95005071}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6400E73E-C7D6-4B06-B573-929D95005071}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6400E73E-C7D6-4B06-B573-929D95005071}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF4CEA6E-797B-4B14-97D4-0CA872EA1F02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF4CEA6E-797B-4B14-97D4-0CA872EA1F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF4CEA6E-797B-4B14-97D4-0CA872EA1F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF4CEA6E-797B-4B14-97D4-0CA872EA1F02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

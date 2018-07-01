@@ -15,6 +15,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MiniProfilerXRay.EntityFrameworkCore\MiniProfilerXRay.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\MiniProfilerXRay\MiniProfilerXRay.csproj" />
   </ItemGroup>
 </Project>

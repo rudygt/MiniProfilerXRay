@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Amazon.XRay.Recorder.Core.Internal.Emitters;
 using Amazon.XRay.Recorder.Core.Internal.Entities;
@@ -24,15 +25,22 @@ namespace MiniProfilerXRay
         private static readonly string X_FORWARDED_FOR = "X-Forwarded-For";
 
         private static readonly OrderedDictionary AlreadySent = new OrderedDictionary();
-        private readonly ISegmentEmitter _emmiter = new UdpSegmentEmitter();
+        private readonly ISegmentEmitter _emmiter = new UdpSegmentEmitter();        
 
         private IServiceProvider _provider;
+        private string _serviceName;
 
         public XRayMiniprofilerStorage()
         {
+            _serviceName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;            
         }
 
-        public XRayMiniprofilerStorage(string xRayEndpoint)
+        public XRayMiniprofilerStorage(string serviceName)
+        {
+            _serviceName = serviceName;            
+        }
+
+        public XRayMiniprofilerStorage(string xRayEndpoint, string serviceName) : this(serviceName)
         {
             _emmiter.SetDaemonAddress(xRayEndpoint);
         }
@@ -47,17 +55,25 @@ namespace MiniProfilerXRay
         {
             var currentDateTime = profiler.Started;
 
-            var trace = new Segment(profiler.Name, NewId(currentDateTime));
+            var trace = new Segment(_serviceName, NewId(currentDateTime));
 
             trace.StartTime = currentDateTime.AddMilliseconds((double) profiler.Root.StartMilliseconds)
                 .ToUnixTimeSeconds();
 
             if (profiler.Root.DurationMilliseconds != null)
-                trace.EndTime = trace.StartTime + profiler.Root.DurationMilliseconds.Value / 1000;
+                trace.EndTime = trace.StartTime + profiler.Root.DurationMilliseconds.Value / 1000;            
 
             AddHttpInformation(trace);
 
-            foreach (var child in profiler.Root.Children) ProcessNode(child, trace, trace);
+            var root = new Subsegment(profiler.Name);
+            root.StartTime = trace.StartTime;
+            root.EndTime = trace.EndTime;
+
+            trace.AddSubsegment(root);
+           
+            foreach (var child in profiler.Root.Children) ProcessNode(child, root, root);
+
+            root.Release();
 
             trace.Release();
 
@@ -149,12 +165,24 @@ namespace MiniProfilerXRay
                         {
                             var sqlSub = new Subsegment(sqlTiming.ExecuteType);
 
+                            sqlSub.Namespace = "remote";
+
                             sqlSub.StartTime = root.StartTime + sqlTiming.StartMilliseconds / 1000;
 
                             if (sqlTiming.DurationMilliseconds != null)
                                 sqlSub.EndTime = sqlSub.StartTime + sqlTiming.DurationMilliseconds.Value / 1000;
 
-                            sqlSub.Sql["sanitized_query"] = sqlTiming.CommandString;
+                            var commandText = sqlTiming.CommandString;                            
+
+                            if (sqlTiming.CommandString.Contains("/*XRAY"))
+                            {
+                                var parts = Regex.Split(sqlTiming.CommandString, "\n/\\*XRAY");
+                                commandText = parts[0];
+                                var server = parts[1].Replace(" */","");
+                                sqlSub.Name = server;
+                            }
+
+                            sqlSub.Sql["sanitized_query"] = commandText;
 
                             subSegment.AddSubsegment(sqlSub);
 

@@ -23,13 +23,13 @@ namespace Samples.Console
         {
             try
             {
-                MiniProfiler.DefaultOptions.Storage = args.Length == 2 ? new XRayMiniprofilerStorage(args[1]) : new XRayMiniprofilerStorage("192.168.99.100:2000");
+                MiniProfiler.DefaultOptions.Storage = args.Length == 2 ? new XRayMiniprofilerStorage(args[1], "ConsoleTest") : new XRayMiniprofilerStorage("192.168.99.100:2000", "ConsoleTest");
 
-                /*Test();
-                WriteLine(MiniProfiler.Current.RenderPlainText());*/
-                
-                TestMultiThreaded();
+                Test();
                 WriteLine(MiniProfiler.Current.RenderPlainText());
+                
+                /*TestMultiThreaded();
+                WriteLine(MiniProfiler.Current.RenderPlainText());*/
 
                 if (Debugger.IsAttached)
                     ReadKey();
