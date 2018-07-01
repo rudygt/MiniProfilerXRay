@@ -28,22 +28,20 @@ namespace MiniProfilerXRay
         private readonly ISegmentEmitter _emmiter = new UdpSegmentEmitter();        
 
         private IServiceProvider _provider;
-        private string _serviceName;
+
+        private string _serviceName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
         public XRayMiniprofilerStorage()
-        {
-            _serviceName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;            
+        {            
         }
 
-        public XRayMiniprofilerStorage(string xRayEndpoint) : this()
+        public XRayMiniprofilerStorage(string xRayEndpoint, string serviceName = null)
         {
             _emmiter.SetDaemonAddress(xRayEndpoint);
-        }
 
-        public XRayMiniprofilerStorage(string xRayEndpoint, string serviceName) : this(xRayEndpoint)
-        {
-            _serviceName = serviceName;
-        }
+            if (serviceName != null)
+                _serviceName = serviceName;
+        }        
         
         public IEnumerable<Guid> List(int maxResults, DateTime? start = null, DateTime? finish = null,
             ListResultsOrder orderBy = ListResultsOrder.Descending)
