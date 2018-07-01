@@ -35,16 +35,16 @@ namespace MiniProfilerXRay
             _serviceName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;            
         }
 
-        public XRayMiniprofilerStorage(string serviceName)
-        {
-            _serviceName = serviceName;            
-        }
-
-        public XRayMiniprofilerStorage(string xRayEndpoint, string serviceName) : this(serviceName)
+        public XRayMiniprofilerStorage(string xRayEndpoint) : this()
         {
             _emmiter.SetDaemonAddress(xRayEndpoint);
         }
 
+        public XRayMiniprofilerStorage(string xRayEndpoint, string serviceName) : this(xRayEndpoint)
+        {
+            _serviceName = serviceName;
+        }
+        
         public IEnumerable<Guid> List(int maxResults, DateTime? start = null, DateTime? finish = null,
             ListResultsOrder orderBy = ListResultsOrder.Descending)
         {

@@ -8,7 +8,7 @@ namespace MiniProfilerXRay.ConsoleSample
     {
         private static void Main(string[] args)
         {
-            MiniProfiler.DefaultOptions.Storage = args.Length == 2 ? new XRayMiniprofilerStorage(args[1]) : new XRayMiniprofilerStorage("192.168.99.100:2000");
+            MiniProfiler.DefaultOptions.Storage = args.Length == 2 ? new XRayMiniprofilerStorage(args[1]) : new XRayMiniprofilerStorage("192.168.99.100:2000", "ConsoleApp");
 
             var mp = MiniProfiler.StartNew("TestApp");
 

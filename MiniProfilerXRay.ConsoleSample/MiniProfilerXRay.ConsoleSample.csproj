@@ -7,7 +7,11 @@
 
   <ItemGroup>
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.119" />
-    <PackageReference Include="rdebug.MiniProfilerXRay" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MiniProfilerXRay.EntityFrameworkCore\MiniProfilerXRay.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\MiniProfilerXRay\MiniProfilerXRay.csproj" />
   </ItemGroup>
 
 </Project>
