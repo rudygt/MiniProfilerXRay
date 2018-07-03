@@ -12,11 +12,34 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
+using Timing = StackExchange.Profiling.Timing;
 
 namespace MiniProfilerXRay
 {
+    public static class XRayMiniprofilerExtensions
+    {
+        public static CustomTiming StartXRayAnnotations(this MiniProfiler instance)
+        {
+            return instance.CustomTiming("xrayAnnotations", "");
+        }
+
+        public static void AddXRayAnnotation(this CustomTiming timing, string key, object value)
+        {
+            if (!string.IsNullOrEmpty(timing.CommandString))
+            {
+                timing.CommandString += ",";
+            }
+
+            timing.CommandString += "{ \"Key\" : \"" + key + "\" , \"Value\" : " + JsonConvert.SerializeObject(value) + "}";
+
+            /*timing.CommandString += JsonConvert.SerializeObject(new KeyValuePair<string, object>(key, value));*/
+        }
+    }
+
     public class XRayMiniprofilerStorage : IAsyncStorage
     {
         private const int RandomNumberHexDigits = 24;
@@ -158,7 +181,9 @@ namespace MiniProfilerXRay
 
             if (node.HasCustomTimings)
                 foreach (var kvp in node.CustomTimings)
+                {
                     if (kvp.Key == "sql")
+                    {
                         foreach (var sqlTiming in kvp.Value)
                         {
                             var sqlSub = new Subsegment(sqlTiming.ExecuteType);
@@ -170,13 +195,13 @@ namespace MiniProfilerXRay
                             if (sqlTiming.DurationMilliseconds != null)
                                 sqlSub.EndTime = sqlSub.StartTime + sqlTiming.DurationMilliseconds.Value / 1000;
 
-                            var commandText = sqlTiming.CommandString;                            
+                            var commandText = sqlTiming.CommandString;
 
                             if (sqlTiming.CommandString.Contains("/*XRAY"))
                             {
                                 var parts = Regex.Split(sqlTiming.CommandString, "\n/\\*XRAY");
                                 commandText = parts[0];
-                                var server = parts[1].Replace(" */","");
+                                var server = parts[1].Replace(" */", "");
                                 sqlSub.Name = server;
                             }
 
@@ -186,6 +211,31 @@ namespace MiniProfilerXRay
 
                             sqlSub.Release();
                         }
+                    }
+                    else
+                    {
+                        if (kvp.Key == "xrayAnnotations")
+                        {                            
+                            foreach (var annotationTiming in kvp.Value)
+                            {
+                                try
+                                {
+                                    var jsonData = "[" + annotationTiming.CommandString + "]";
+
+                                    var map = JsonConvert.DeserializeObject<List<KeyValuePair<string, object>>>(jsonData);
+
+                                    foreach (var pair in map)
+                                    {
+                                        subSegment.AddAnnotation(pair.Key, pair.Value);
+                                    }
+                                }
+                                catch (Exception )
+                                {                                    
+                                }                                
+                            }
+                        }
+                    }
+                }
 
             subSegment.Release();
         }
